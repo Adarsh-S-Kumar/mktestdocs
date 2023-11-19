@@ -1,3 +1,4 @@
+#updated code with "ignore" block and block "title" option 
 import inspect
 import pathlib
 import subprocess
@@ -40,8 +41,10 @@ def exec_python(source):
     Does not return anything, but exceptions raised by the source
     will propagate out unmodified
     """
+    glob=globals()
+    glob.update({"__MODULE__": "__main__"})
     try:
-        exec(source, {"__MODULE__": "__main__"})
+        exec(source,glob)
     except Exception:
         print(source)
         raise
@@ -72,13 +75,16 @@ def check_codeblock(block, lang="python"):
     Returns an empty string if the codeblock is deemed invalid.
 
     Arguments:
-        block: the code block to analyse
+        block: the code block to analyze
         lang: if not None, the language that is assigned to the codeblock
     """
     first_line = block.split("\n")[0]
     if lang:
-        if first_line[3:] != lang:
+        if first_line[3:].split()[0] != lang:
             return ""
+    # Check if the code block should be ignored
+    if "ignore" in first_line.lower():
+        return ""
     return "\n".join(block.split("\n")[1:])
 
 
