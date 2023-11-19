@@ -4,6 +4,10 @@
 
 Run pytest against markdown files/docstrings.
 
+# updates
+Supports "Title" for code block
+Supports "Ignore" command for code block
+
 # Installation 
 
 ```
